@@ -1,6 +1,10 @@
 #pragma once
+#pragma once
 #include<opencv2/opencv.hpp>
-
+#include <iostream>
+#include <fstream>
+#include <cassert>
+#include <string>
 #include<cstdio>
 
 namespace Code
@@ -8,11 +12,14 @@ namespace Code
 	using namespace cv;
 	using namespace std;
 	enum class FrameType;
-	void BulidSafeArea(Mat& mat);             //安全带
-	void BulidQrPoint(Mat& mat);              //定位图案
+
+	void BulidQrPoint(Mat& mat);              //????????????
 	void BulidInfoRect(Mat& mat, unsigned char* info, unsigned long len, int areaID);
 	void BulidFrameFlag(Mat& mat, FrameType frameType, unsigned long tailLen);
-	Mat CodeFrame(FrameType frameType, unsigned char* info, unsigned long tailLen);
-	Mat amplify(const Mat& src);
-	void Main(unsigned char* info, unsigned long len, const char* savePath, const char* outputFormat);  //传入文件地址，长度，保存路径，保存格式
+	void BulidPicNum(Mat& mat, int PicNum);
+	Mat CodeFrame(FrameType frameType, unsigned char* info, unsigned long tailLen, int PicNum);
+	Mat amplify(const Mat& src, int tag);
+	void Main(unsigned char* info, unsigned long len, const char* savePath, const char* outputFormat, int tag);
+	Mat transform(const Mat& src);        //?��????????��??????��??|?????��
+	void BuildCRC_16(Mat& mat, unsigned char* info, int len, int area_No);             //ʹ��CRC-16/CCITT        x16+x12+x5+1 
 }

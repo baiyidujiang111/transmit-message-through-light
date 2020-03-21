@@ -1,3 +1,4 @@
+#pragma once
 #define _CRT_SECURE_NO_WARNINGS
 #include "FileConvert.h"
 #include<iostream>
@@ -56,14 +57,12 @@ void FileConvert::GenerateRandFile(char filename[], unsigned long size)
 	delete[]tmp;
 }//生成随机文件
 
-void FileConvert::PicTransToVideo(int picNumPersec)//每秒帧数
+void FileConvert::PicTransToVideo(int picNumPersec,char myoutputname[])//每秒帧数
 {
 	string firstSetting, secondSetting, str3;
-	string outputname;
+	string outputname=myoutputname;
 	char picnum[5], command[200];
 	sprintf_s(picnum, "%d", picNumPersec);
-	cout << "please input the output video name:" << endl;
-	cin >> outputname;
 	firstSetting = "ffmpeg -f image2 -r ";
 	secondSetting = " -i imageSrc\\%05d.png -vcodec mpeg4 videoOutput\\";
 	str3 = firstSetting + picnum + secondSetting + outputname;
@@ -73,7 +72,7 @@ void FileConvert::PicTransToVideo(int picNumPersec)//每秒帧数
 
 void FileConvert::VideoTransToPic()
 {
-	string firstSetting, formatName, videoName,str3;
+	string firstSetting, formatName, videoName, str3;
 	char command[200];
 	firstSetting = "ffmpeg -i videoSrc\\";
 	formatName = " imageOutput\\%05d.png";
@@ -82,4 +81,24 @@ void FileConvert::VideoTransToPic()
 	str3 = firstSetting + videoName + formatName; //组合生成ffmpeg命令
 	sprintf_s(command, "%s", str3.c_str()); //转化类型
 	system(command);
+}
+
+
+int FileConvert::GetFilesNumber(string path)
+{
+	int cnt = 0;
+	//文件句柄，win10用long long，win7用long就可以了
+	long hFile = 0;
+	//文件信息 
+	struct _finddata_t fileinfo;
+	std::string p;
+	if ((hFile = _findfirst(p.assign(path).append("\\*").c_str(), &fileinfo)) != -1)
+	{
+		do
+		{
+			cnt++;
+		} while (_findnext(hFile, &fileinfo) == 0);
+		_findclose(hFile);
+	}
+	return cnt - 2;
 }

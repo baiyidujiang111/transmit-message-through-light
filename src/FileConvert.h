@@ -2,6 +2,7 @@
 #include<ctime>
 #include<cstdio>
 #include<string>
+#include<io.h>
 using namespace std;
 class FileConvert
 {
@@ -14,7 +15,8 @@ public:
 	unsigned char* FileToByte(char filename[], unsigned long* size);
 	void ByteToFile(unsigned char* src, char filename[], unsigned long size);
 	void GenerateRandFile(char filename[], unsigned long size);
-	void PicTransToVideo(int picNumPersec);
+	void PicTransToVideo(int picNumPersec, char myoutputname[]);
 	void VideoTransToPic();
 	unsigned long GetFileSize(FILE* p);
+	int GetFilesNumber(string path);
 };
